@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
+import { IMessageData } from '~/@types/store';
 import io from 'socket.io-client';
 
 import {
@@ -13,11 +14,6 @@ const socket = io('http://localhost:3333');
 socket.on('connect', () => console.log('New socket.io-client connection'));
 
 const myId = Math.random().toString(36).substr(2, 9);
-
-interface IMessageData {
-  id: string;
-  message: string;
-}
 
 const Chat: React.FC = () => {
   const [messagesData, setMessagesData] = useState<IMessageData[]>([]);
