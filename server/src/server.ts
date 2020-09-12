@@ -16,12 +16,11 @@ io.on('connection', socket => {
   console.log('New socket.io connection');
 
   socket.on('chat.message', messageData => {
-    console.log('chat.message', messageData);
     io.emit('chat.message', messageData);
   });
 
   socket.on('disconnect', () => {
-    console.log('Disconnected from socket.io');
+    console.log('A client disconnected from socket.io');
   });
 });
 

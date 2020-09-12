@@ -1,7 +1,7 @@
 import { IMessageData } from '~/@types/store';
 
 export default {
-  addToCart(messageData: IMessageData) {
-    return { type: '@chat/ADD', payload: messageData };
+  addMessage(messageData: IMessageData) {
+    return { type: '@chat/ADD_MESSAGE', payload: messageData };
   },
 };

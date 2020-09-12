@@ -9,9 +9,10 @@ interface Action {
   payload: IMessageData;
 }
 
-const cart = produce((draft: IMessageData, action: Action) => {
+const cart = produce((draft: IMessageData[], action: Action) => {
   switch (action.type) {
-    case '@chat/ADD': {
+    case '@chat/ADD_MESSAGE': {
+      draft.push(action.payload);
       break;
     }
   }

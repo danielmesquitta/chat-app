@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { IMessageData } from '~/@types/store';
 import io from 'socket.io-client';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   Container,
@@ -9,23 +9,26 @@ import {
   MessageOther,
   Form,
 } from './styles';
+import { IMessageData, IReduxState } from '~/@types/store';
+import chatActions from '~/store/modules/chat/actions';
+import generateId from '~/utils/generateId';
 
 const socket = io('http://localhost:3333');
-socket.on('connect', () => console.log('New socket.io-client connection'));
-
-const myId = Math.random().toString(36).substr(2, 9);
+const myId = generateId();
 
 const Chat: React.FC = () => {
-  const [messagesData, setMessagesData] = useState<IMessageData[]>([]);
+  const dispatch = useDispatch();
+  const chat = useSelector<IReduxState, IMessageData[]>(state => state.chat);
+
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
     const handleNewMessage = (messageData: IMessageData) =>
-      setMessagesData([...messagesData, messageData]);
+      dispatch(chatActions.addMessage(messageData));
 
     socket.on('chat.message', handleNewMessage);
     return () => socket.off('chat.message', handleNewMessage) as any;
-  }, [messagesData]);
+  }, [dispatch]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -42,7 +45,7 @@ const Chat: React.FC = () => {
   return (
     <Container>
       <MessageList>
-        {messagesData.map(({ message, id }, index) =>
+        {chat.map(({ message, id }, index) =>
           id === myId ? (
             <MessageMine key={index}>{message}</MessageMine>
           ) : (
