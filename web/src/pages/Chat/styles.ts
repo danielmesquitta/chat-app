@@ -41,9 +41,10 @@ export const Form = styled.form`
   padding: 1rem;
 
   input {
-    border: 1px solid #dcdcdc;
-    border-radius: 5px;
+    background: #dcdcdc;
+    border: 2px solid #555;
     color: #333;
+    border-radius: 5px;
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
     width: 100%;

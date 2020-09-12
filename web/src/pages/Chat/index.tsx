@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import io from 'socket.io-client';
 
 import {
@@ -9,32 +9,57 @@ import {
   Form,
 } from './styles';
 
+const socket = io('http://localhost:3333');
+socket.on('connect', () => console.log('New socket.io-client connection'));
+
+const myId = Math.random().toString(36).substr(2, 9);
+
+interface IMessageData {
+  id: string;
+  message: string;
+}
+
 const Chat: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [message, setMessage] = useState('');
+  const [messagesData, setMessagesData] = useState<IMessageData[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+
+  useEffect(() => {
+    const handleNewMessage = (messageData: IMessageData) =>
+      setMessagesData([...messagesData, messageData]);
+
+    socket.on('chat.message', handleNewMessage);
+    return () => socket.off('chat.message', handleNewMessage) as any;
+  }, [messagesData]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const formattedMessage = message.trim();
-    if (formattedMessage) {
-      setMessages([...messages, formattedMessage]);
+    const message = newMessage.trim();
+    if (message) {
+      socket.emit('chat.message', {
+        id: myId,
+        message,
+      });
     }
-    setMessage('');
+    setNewMessage('');
   }
 
   return (
     <Container>
       <MessageList>
-        {messages.map((message, index) => (
-          <MessageMine key={index}>{message}</MessageMine>
-        ))}
+        {messagesData.map(({ message, id }, index) =>
+          id === myId ? (
+            <MessageMine key={index}>{message}</MessageMine>
+          ) : (
+            <MessageOther key={index}>{message}</MessageOther>
+          )
+        )}
       </MessageList>
 
       <Form onSubmit={handleSubmit}>
         <input
           placeholder="Your message"
-          onChange={e => setMessage(e.target.value)}
-          value={message}
+          onChange={e => setNewMessage(e.target.value)}
+          value={newMessage}
         />
       </Form>
     </Container>
