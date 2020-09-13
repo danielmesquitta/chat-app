@@ -8,6 +8,7 @@ export const Container = styled.main`
   margin: auto;
   max-width: 1200px;
   width: 100%;
+  box-shadow: 0 0 2px black;
 `;
 
 export const MessageList = styled.ul`
@@ -37,7 +38,6 @@ export const MessageOther = styled(Message)`
 `;
 
 export const Form = styled.form`
-  background: #434758;
   padding: 1rem;
 
   input {

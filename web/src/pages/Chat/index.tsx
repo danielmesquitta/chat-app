@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,18 +10,28 @@ import {
   MessageOther,
   Form,
 } from './styles';
-import { IMessageData, IReduxState } from '~/@types/store';
+import { IMessageData, IUser, IReduxState } from '~/@types/store';
+import { IParams } from '~/@types/routes';
 import chatActions from '~/store/modules/chat/actions';
-import generateId from '~/utils/generateId';
 
 const socket = io('http://localhost:3333');
-const myId = generateId();
 
 const Chat: React.FC = () => {
   const dispatch = useDispatch();
+
+  const history = useHistory();
+  const params = useParams<IParams>();
+
   const chat = useSelector<IReduxState, IMessageData[]>(state => state.chat);
+  const user = useSelector<IReduxState, IUser>(state => state.user);
 
   const [newMessage, setNewMessage] = useState('');
+
+  useEffect(() => {
+    if (!user.name || !user.id) {
+      history.push('/');
+    }
+  }, [history, user.id, user.name]);
 
   useEffect(() => {
     const handleNewMessage = (messageData: IMessageData) =>
@@ -35,8 +46,9 @@ const Chat: React.FC = () => {
     const message = newMessage.trim();
     if (message) {
       socket.emit('chat.message', {
-        id: myId,
+        userId: params.userId,
         message,
+        userName: user.name,
       });
     }
     setNewMessage('');
@@ -45,11 +57,19 @@ const Chat: React.FC = () => {
   return (
     <Container>
       <MessageList>
-        {chat.map(({ message, id }, index) =>
-          id === myId ? (
-            <MessageMine key={index}>{message}</MessageMine>
+        {chat.map(({ message, userId, userName }, index) =>
+          userId === params.userId ? (
+            <MessageMine key={index}>
+              <b>{userName}</b>
+              <br />
+              {message}
+            </MessageMine>
           ) : (
-            <MessageOther key={index}>{message}</MessageOther>
+            <MessageOther key={index}>
+              <b>{userName}</b>
+              <br />
+              {message}
+            </MessageOther>
           )
         )}
       </MessageList>

@@ -15,7 +15,7 @@ export default createGlobalStyle`
   }  
   html, body, #root{
     min-height: 100%;
-    background: #434758;
+    background: #222;
   }
   body{
     background: fixed center no-repeat cover;

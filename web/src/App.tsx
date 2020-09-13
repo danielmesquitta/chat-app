@@ -1,15 +1,18 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
 import GlobalStyles from './styles/global';
-import Chat from './pages/Chat';
 import store from './store';
+import Routes from './Routes';
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
       <GlobalStyles />
-      <Chat />
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
     </Provider>
   );
 };
