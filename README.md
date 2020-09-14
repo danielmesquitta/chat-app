@@ -26,14 +26,6 @@
 - [Styled Components](https://styled-components.com/)
 - [Socket.io-client](https://socket.io/docs/client-api/)
 
-<br/>
-
-<p align="center">
-  <img src="docs/demo-web.gif" />
-</p>
-
-<br/>
-
 ## MOBILE
 
 ### Technologies
@@ -45,14 +37,6 @@
 - [React Navigation](https://reactnavigation.org/)
 - [Styled Components](https://styled-components.com/)
 - [Socket.io-client](https://socket.io/docs/client-api/)
-
-<br/>
-
-<p align="center">
-  <img src="docs/demo-mobile.gif" width="200px" />
-</p>
-
-<br/>
 
 ## GETTING STARTED
 ### Requirements
