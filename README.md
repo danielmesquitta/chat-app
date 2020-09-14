@@ -2,9 +2,7 @@
 
 [SERVER](#server), [WEB](#web) and [MOBILE](#mobile) application. Real time chat app using Node, React and Socket.io 💬📱
 
-<br><br>
 <img src="docs/mockup.png">
-<br>
 
 ## SERVER
 
