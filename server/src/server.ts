@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import socket from 'socket.io';
+import 'dotenv/config';
 
 const app = express();
 app.use(cors());
@@ -9,8 +10,8 @@ app.use(cors());
 const server = http.createServer(app);
 const io = socket(server);
 
-const SERVER_HOST = '192.168.100.26';
-const SERVER_PORT = 3333;
+const SERVER_HOST = process.env.HOST;
+const SERVER_PORT = Number(process.env.PORT);
 
 io.on('connection', socket => {
   console.log('New socket.io connection');

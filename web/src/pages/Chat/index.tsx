@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import React, { useState, useEffect, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import io from 'socket.io-client';
@@ -13,7 +15,10 @@ import {
 import { IMessageData, IUser, IReduxState } from '~/@types/store';
 import chatActions from '~/store/modules/chat/actions';
 
-const socket = io('http://192.168.100.26:3333');
+const SERVER_HOST = process.env.HOST;
+const SERVER_PORT = process.env.PORT;
+
+const socket = io(`http://${SERVER_HOST}:${SERVER_PORT}`);
 
 const Chat: React.FC = () => {
   const dispatch = useDispatch();
