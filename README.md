@@ -9,6 +9,7 @@
 ### Technologies
 
 - [Node.js](https://nodejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
 - [Express](https://expressjs.com/)
 - [Socket.io](https://socket.io/)
 
