@@ -15,8 +15,8 @@ import {
 import { IMessageData, IUser, IReduxState } from '~/@types/store';
 import chatActions from '~/store/modules/chat/actions';
 
-const SERVER_HOST = process.env.HOST;
-const SERVER_PORT = process.env.PORT;
+const { SERVER_HOST } = process.env;
+const { SERVER_PORT } = process.env;
 
 const socket = io(`http://${SERVER_HOST}:${SERVER_PORT}`);
 
