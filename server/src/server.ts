@@ -9,7 +9,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = socket(server);
 
-const SERVER_HOST = 'localhost';
+const SERVER_HOST = '192.168.100.26';
 const SERVER_PORT = 3333;
 
 io.on('connection', socket => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,16 +11,14 @@ import {
   Form,
 } from './styles';
 import { IMessageData, IUser, IReduxState } from '~/@types/store';
-import { IParams } from '~/@types/routes';
 import chatActions from '~/store/modules/chat/actions';
 
-const socket = io('http://localhost:3333');
+const socket = io('http://192.168.100.26:3333');
 
 const Chat: React.FC = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const params = useParams<IParams>();
 
   const chat = useSelector<IReduxState, IMessageData[]>(state => state.chat);
   const user = useSelector<IReduxState, IUser>(state => state.user);
@@ -46,7 +44,7 @@ const Chat: React.FC = () => {
     const message = newMessage.trim();
     if (message) {
       socket.emit('chat.message', {
-        userId: params.userId,
+        userId: user.id,
         message,
         userName: user.name,
       });
@@ -58,7 +56,7 @@ const Chat: React.FC = () => {
     <Container>
       <MessageList>
         {chat.map(({ message, userId, userName }, index) =>
-          userId === params.userId ? (
+          userId === user.id ? (
             <MessageMine key={index}>
               <b>{userName}</b>
               <br />

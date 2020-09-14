@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
+import { Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import { Container, Title, Form, Input } from './styles';
 import Button from '~/components/Button';
-import { Alert } from 'react-native';
+import userActions from '~/store/modules/user/actions';
+import generateId from '~/utils/generateId';
+
+const userId = generateId();
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch();
+  const { navigate } = useNavigation();
+
   const [name, setName] = useState('');
 
   function handleSubmit() {
     if (!name) {
-      Alert.alert('Attention', 'You need to enter your username');
-      return;
+      return Alert.alert('Attention', 'You need to enter your username');
     }
+
+    const newUser = { id: userId, name };
+    dispatch(userActions.createUser(newUser));
+    navigate('Chat', { userId });
   }
 
   return (

@@ -19,7 +19,7 @@ const Login: React.FC = () => {
   function handleSubmit() {
     const newUser = { id: userId, name };
     dispatch(userActions.createUser(newUser));
-    history.push(`/chat/${userId}`);
+    history.push('/chat');
   }
 
   return (
