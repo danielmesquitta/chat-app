@@ -110,7 +110,7 @@ $ yarn start
 
 #### On IOS
 
-This app was created in a Linux computer, so if you want to run it on a iPhone device you will need to do the linking first
+This app was created in a Linux computer, so if you want to run it on an iPhone device you will need to do the linking first
 
 ```shell
 # Link
