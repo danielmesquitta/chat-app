@@ -10,7 +10,7 @@ const Message: React.FC<IMessageProps> = ({
   ...rest
 }) => {
   return (
-    <Container mine={mine} {...rest}>
+    <Container mine={mine} user={user} {...rest}>
       <Text mine={mine}>
         <User>{user}</User>
         {'\n' + children}

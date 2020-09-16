@@ -1,5 +1,6 @@
 import { SERVER_HOST, SERVER_PORT } from '@env';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { ScrollView, Keyboard } from 'react-native';
 import io from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -13,6 +14,7 @@ const Chat: React.FC = () => {
   const dispatch = useDispatch();
   const { chat, user } = useSelector<IReduxState, IReduxState>(state => state);
   const [newMessage, setNewMessage] = useState('');
+  const scrollView = useRef<ScrollView>(null);
 
   const socket = useMemo(
     () =>
@@ -23,6 +25,14 @@ const Chat: React.FC = () => {
       ),
     []
   );
+
+  function scrollToEnd() {
+    scrollView.current?.scrollToEnd();
+  }
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', scrollToEnd);
+  }, []);
 
   useEffect(() => {
     const handleNewMessage = (messageData: IMessageData) =>
@@ -45,7 +55,7 @@ const Chat: React.FC = () => {
 
   return (
     <Container>
-      <MessageList>
+      <MessageList ref={scrollView} onContentSizeChange={scrollToEnd}>
         {chat.map(({ message, userId, userName }, index) => (
           <Message
             key={String(index)}

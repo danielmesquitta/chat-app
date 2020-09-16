@@ -14,6 +14,12 @@ export const Container = styled.View<IMessageProps>`
           border-color: #82be27;
           margin-left: auto;
         `
+      : props.user === 'Admin'
+      ? css`
+          background: #eee;
+          border-color: #ddd;
+          margin-right: auto;
+        `
       : css`
           background: #89ddff;
           border-color: #1abeff;
@@ -34,7 +40,5 @@ export const Text = styled.Text<IMessageProps>`
 `;
 
 export const User = styled.Text`
-  font-size: 16px;
-
   font-weight: bold;
 `;

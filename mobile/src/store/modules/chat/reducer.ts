@@ -12,13 +12,8 @@ interface Action {
 const cart = produce((draft: IMessageData[], action: Action) => {
   switch (action.type) {
     case '@chat/ADD_MESSAGE': {
-      const isNotRepeatedAdminMessage =
-        draft.findIndex(
-          ({ message, userName }) =>
-            userName === 'Admin' && message === action.payload.message
-        ) === -1;
-
-      if (isNotRepeatedAdminMessage) {
+      const isSpam = draft.findIndex(item => item === action.payload) >= 0;
+      if (!isSpam) {
         draft.push(action.payload);
       }
       break;

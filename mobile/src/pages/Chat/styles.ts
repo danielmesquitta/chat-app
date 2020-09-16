@@ -3,11 +3,12 @@ import styled from 'styled-components/native';
 import Background from '~/styles/Background';
 
 export const Container = styled(Background)`
+  flex: 1;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const MessageList = styled.View`
+export const MessageList = styled.ScrollView`
   width: 90%;
 `;
 
