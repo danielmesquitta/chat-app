@@ -17,26 +17,6 @@ export const MessageList = styled.ul`
   flex-direction: column;
 `;
 
-export const Message = styled.li`
-  border: 1px solid transparent;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-`;
-
-export const MessageMine = styled(Message)`
-  text-align: right;
-  margin-left: auto;
-  background: #c3e88d;
-  border-color: #82be27;
-`;
-
-export const MessageOther = styled(Message)`
-  margin-right: auto;
-  background: #89ddff;
-  border-color: #1abeff;
-`;
-
 export const Form = styled.form`
   padding: 1rem;
 

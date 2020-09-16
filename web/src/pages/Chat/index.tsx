@@ -1,45 +1,45 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, useMemo, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  Container,
-  MessageList,
-  MessageMine,
-  MessageOther,
-  Form,
-} from './styles';
-import { IMessageData, IUser, IReduxState } from '~/@types/store';
+import { Container, MessageList, Form } from './styles';
+import Message from '~/components/Message';
+import { IMessageData, IReduxState } from '~/@types/store';
 import chatActions from '~/store/modules/chat/actions';
+import store from '~/store';
 
 const { REACT_APP_SERVER_HOST, REACT_APP_SERVER_PORT } = process.env;
 
-const socket = io(`http://${REACT_APP_SERVER_HOST}:${REACT_APP_SERVER_PORT}`);
-
 const Chat: React.FC = () => {
   const dispatch = useDispatch();
-
   const history = useHistory();
 
-  const chat = useSelector<IReduxState, IMessageData[]>(state => state.chat);
-  const user = useSelector<IReduxState, IUser>(state => state.user);
-
+  const { chat, user } = useSelector<IReduxState, IReduxState>(state => state);
   const [newMessage, setNewMessage] = useState('');
 
-  useEffect(() => {
-    if (!user.name || !user.id) {
-      history.push('/');
-    }
-  }, [history, user.id, user.name]);
+  const socket = useMemo(
+    () =>
+      io(
+        `http://${REACT_APP_SERVER_HOST}:${REACT_APP_SERVER_PORT}?user=${
+          store.getState().user.name
+        }`
+      ),
+    []
+  );
 
   useEffect(() => {
     const handleNewMessage = (messageData: IMessageData) =>
       dispatch(chatActions.addMessage(messageData));
 
     socket.on('chat.message', handleNewMessage);
-    return () => socket.off('chat.message', handleNewMessage) as any;
-  }, [dispatch]);
+  }, [dispatch, socket]);
+
+  useEffect(() => {
+    if (!user.name || !user.id) {
+      history.push('/');
+    }
+  }, [history, user.id, user.name]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -57,21 +57,11 @@ const Chat: React.FC = () => {
   return (
     <Container>
       <MessageList>
-        {chat.map(({ message, userId, userName }, index) =>
-          userId === user.id ? (
-            <MessageMine key={index}>
-              <b>{userName}</b>
-              <br />
-              {message}
-            </MessageMine>
-          ) : (
-            <MessageOther key={index}>
-              <b>{userName}</b>
-              <br />
-              {message}
-            </MessageOther>
-          )
-        )}
+        {chat.map(({ message, userId, userName }, index) => (
+          <Message mine={userId === user.id} user={userName} key={index}>
+            {message}
+          </Message>
+        ))}
       </MessageList>
 
       <Form onSubmit={handleSubmit}>

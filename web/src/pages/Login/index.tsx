@@ -16,7 +16,7 @@ const Login: React.FC = () => {
 
   const [name, setName] = useState('');
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const newUser = { id: userId, name };
     dispatch(userActions.createUser(newUser));
     history.push('/chat');
